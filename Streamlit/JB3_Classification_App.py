@@ -1,13 +1,6 @@
-# Streamlit dependencies
 import streamlit as st
 import joblib
 import os
-
-# Data dependencies
-import pandas as pd
-
-# Print current working directory for debugging
-#st.write("Current working directory:", os.getcwd())
 
 # Function to load the vectorizer
 def load_vectorizer(vectorizer_path):
@@ -43,52 +36,110 @@ category_mapping = {
 # Main function to build the Streamlit app
 def main():
     """News Classifier App with Streamlit"""
+    st.set_page_config(page_title="News Classifier App", page_icon=":newspaper:")
+
+    # Sidebar navigation
+    st.sidebar.title("Navigation")
+    page_selection = st.sidebar.radio("Go to", ["Home", "Information", "Prediction"])
+
+    # Main content based on selection
+    if page_selection == "Home":
+        show_home_page()
+    elif page_selection == "Information":
+        show_information_page()
+    elif page_selection == "Prediction":
+        show_prediction_page()
+
+def show_home_page():
+    st.title("The News Spot Classifier App!")
+    st.write("""
+        Explore different sections of the app using the sidebar navigation.
+    """)
+
+    # Section 1: Introduction
+    st.header("Introduction")
+    st.markdown("""
+        In today's world, information flows faster than ever before. 
+        This app uses machine learning to classify news articles into categories, 
+        helping you navigate through vast amounts of information with ease.
+    """)
+    st.video(r"C:\Users\User\Downloads\Streamlit\JB3_Classification_Project_Streamlit\Streamlit\Video1.mp4")
+
+    # Section 2: How It Works
+    st.header("How It Works")
+    st.markdown("""
+        Our models analyze the text of news articles and predict which category they belong to. 
+        Explore the "Prediction" section to see it in action!
+    """)
+    st.video(r"C:\Users\User\Downloads\Streamlit\JB3_Classification_Project_Streamlit\Streamlit\Video2.mp4")
+
+    # Section 3: Benefits
+    st.header("Benefits")
+    st.markdown("""
+        - Quickly find relevant news
+        - Stay informed on topics that matter to you
+        - Save time with automated categorization
+    """)
+    st.video(r"C:\Users\User\Downloads\Streamlit\JB3_Classification_Project_Streamlit\Streamlit\Video3.mp4")
+
+    # Section 4: Real-Life Examples
+    st.header("Real-Life Examples")
+    st.markdown("""
+        See how news classification can be applied in various industries:
+        - **Business**: Analyzing market trends
+        - **Education**: Enhancing learning materials
+        - **Entertainment**: Curating media content
+        - **Sports**: Tracking game statistics
+        - **Technology**: Monitoring tech innovations
+    """)
     
-    # Creates a main title and subheader on your page
-    st.title("News Classifier")
-    st.subheader("Analysing news articles")
-    
-    # Creating sidebar with selection box
-    options = ["Prediction", "Information"]
-    selection = st.sidebar.selectbox("Choose Option", options)
-    
-    # Building out the "Information" page
-    if selection == "Information":
-        st.info("General Information")
-        st.markdown("Some information here")
-    
-    # Building out the prediction page
-    if selection == "Prediction":
-        st.info("Prediction with ML Models")
+    st.video("C:/Users/User/Downloads/Streamlit/JB3_Classification_Project_Streamlit/Streamlit/video4.mp4")
+
+def show_information_page():
+    st.title("Information")
+    st.info("General information about the app and its functionality.")
+
+    # Example content
+    st.markdown("""
+        This app demonstrates the use of machine learning models for news classification.
         
-        # Model selection
-        model_choice = st.selectbox("Choose Model", list(model_paths.keys()))
-        
-        # Creating a text box for user input
-        news_text = st.text_area("Enter Text", "Type Here")
-        
-        if st.button("Classify"):
-            if vectorizer is not None:
-                # Transforming user input with vectorizer
-                vect_text = vectorizer.transform([news_text]).toarray()
-                
-                # Load the selected model
-                model_path = model_paths[model_choice]
-                if os.path.exists(model_path):
-                    predictor = joblib.load(open(model_path, "rb"))
-                    
-                    # Make prediction
-                    prediction = predictor.predict(vect_text)
-                    
-                    # Get the category name
-                    category_name = category_mapping.get(prediction[0], "Unknown category")
-                    
-                    # When model has successfully run, will print prediction
-                    st.success(f"Text Categorized as: {category_name}")
-                else:
-                    st.error(f"Model file not found at {model_path}")
+        - Choose different models to predict the category of a news article.
+        - Explore how text is processed and classified in real-time.
+    """)
+    st.image("C:/Users/User/Downloads/Streamlit/JB3_Classification_Project_Streamlit/Streamlit/Picture2.JPG", caption="Streamlit Logo", use_column_width=True)
+
+def show_prediction_page():
+    st.title("Prediction")
+    st.info("Predict the category of a news article using machine learning models.")
+
+    # Model selection
+    model_choice = st.selectbox("Choose Model", list(model_paths.keys()))
+
+    # Creating a text box for user input
+    news_text = st.text_area("Enter Text", "Type Here")
+
+    if st.button("Classify"):
+        if vectorizer is not None:
+            # Transforming user input with vectorizer
+            vect_text = vectorizer.transform([news_text]).toarray()
+
+            # Load the selected model
+            model_path = model_paths[model_choice]
+            if os.path.exists(model_path):
+                predictor = joblib.load(open(model_path, "rb"))
+
+                # Make prediction
+                prediction = predictor.predict(vect_text)
+
+                # Get the category name
+                category_name = category_mapping.get(prediction[0], "Unknown category")
+
+                # When model has successfully run, will print prediction
+                st.success(f"Text Categorized as: {category_name}")
             else:
-                st.error("Vectorizer could not be loaded. Classification cannot proceed.")
+                st.error(f"Model file not found at {model_path}")
+        else:
+            st.error("Vectorizer could not be loaded. Classification cannot proceed.")
 
 # Required to let Streamlit instantiate our web app
 if __name__ == '__main__':
