@@ -33,6 +33,15 @@ category_mapping = {
     4: "Technology"
 }
 
+# Function to check if the file exists and return the correct path
+def get_file_path(relative_path):
+    file_path = os.path.join(base_path, relative_path)
+    if os.path.exists(file_path):
+        return file_path
+    else:
+        st.error(f"File not found: {file_path}")
+        return None
+
 # Main function to build the Streamlit app
 def main():
     """News Classifier App with Streamlit"""
@@ -63,7 +72,9 @@ def show_home_page():
         This app uses machine learning to classify news articles into categories, 
         helping you navigate through vast amounts of information with ease.
     """)
-    st.video(r"C:\Users\User\Downloads\Streamlit\JB3_Classification_Project_Streamlit\Streamlit\Video1.mp4")
+    video1_path = get_file_path("Video1.mp4")
+    if video1_path:
+        st.video(video1_path)
 
     # Section 2: How It Works
     st.header("How It Works")
@@ -71,7 +82,9 @@ def show_home_page():
         Our models analyze the text of news articles and predict which category they belong to. 
         Explore the "Prediction" section to see it in action!
     """)
-    st.video(r"C:\Users\User\Downloads\Streamlit\JB3_Classification_Project_Streamlit\Streamlit\Video2.mp4")
+    video2_path = get_file_path("Video2.mp4")
+    if video2_path:
+        st.video(video2_path)
 
     # Section 3: Benefits
     st.header("Benefits")
@@ -80,7 +93,9 @@ def show_home_page():
         - Stay informed on topics that matter to you
         - Save time with automated categorization
     """)
-    st.video(r"C:\Users\User\Downloads\Streamlit\JB3_Classification_Project_Streamlit\Streamlit\Video3.mp4")
+    video3_path = get_file_path("Video3.mp4")
+    if video3_path:
+        st.video(video3_path)
 
     # Section 4: Real-Life Examples
     st.header("Real-Life Examples")
@@ -92,8 +107,9 @@ def show_home_page():
         - **Sports**: Tracking game statistics
         - **Technology**: Monitoring tech innovations
     """)
-    
-    st.video("C:/Users/User/Downloads/Streamlit/JB3_Classification_Project_Streamlit/Streamlit/video4.mp4")
+    video4_path = get_file_path("Video4.mp4")
+    if video4_path:
+        st.video(video4_path)
 
 def show_information_page():
     st.title("Information")
@@ -106,7 +122,9 @@ def show_information_page():
         - Choose different models to predict the category of a news article.
         - Explore how text is processed and classified in real-time.
     """)
-    st.image("C:/Users/User/Downloads/Streamlit/JB3_Classification_Project_Streamlit/Streamlit/Picture2.JPG", caption="Streamlit Logo", use_column_width=True)
+    image_path = get_file_path("Picture2.JPG")
+    if image_path:
+        st.image(image_path, caption="Streamlit Logo", use_column_width=True)
 
 def show_prediction_page():
     st.title("Prediction")
